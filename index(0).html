@@ -1,0 +1,295 @@
+আপনি যেহেতু সম্পূর্ণ ডিজাইনটি একটি সিঙ্গেল HTML ফাইলে দেখতে চেয়েছেন, তাই পূর্বের সমস্ত কাঠামো এবং ইনলাইন CSS একত্রিত করে নিচে দেওয়া হলো। এটি আপনার "Student Income Guide" ব্লগের মূল **হোমপেজ মক-আপ**।
+
+```html
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Income Guide - শিক্ষার্থী জীবনে আয়ের সঠিক পথ</title>
+    
+    <!-- গুগল ফন্ট: বাংলা ফন্টের জন্য আদর্শ -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <!-- ইনলাইন CSS: সমস্ত স্টাইল এখানে অন্তর্ভুক্ত করা হলো -->
+    <style>
+        /* কালার ভ্যারিয়েবলস */
+        :root {
+            --color-primary: #007AFF;    /* গভীর নীল */
+            --color-accent: #FFC700;     /* উজ্জ্বল হলুদ/গোল্ডেন */
+            --color-background: #FFFFFF; /* সাদা */
+            --color-light-bg: #F7F7F7;   /* হালকা ধূসর */
+            --color-text: #333333;       /* টেক্সট কালার */
+            --color-heading: #1a1a1a;    /* হেডিং কালার */
+        }
+
+        /* বেসিক রিসেট ও ফন্ট সেটআপ */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: 'Noto Sans Bengali', sans-serif;
+            color: var(--color-text);
+            background-color: var(--color-background);
+            line-height: 1.6;
+            margin-top: 60px; /* ফিক্সড হেডার এর জন্য */
+        }
+        a {
+            text-decoration: none;
+            color: var(--color-primary);
+        }
+        a:hover {
+            color: var(--color-accent);
+        }
+
+        /* হেডার স্টাইল */
+        .main-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 5%;
+            background-color: var(--color-background);
+            border-bottom: 2px solid var(--color-light-bg);
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+        }
+        .logo a {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--color-heading);
+        }
+        .main-nav ul {
+            list-style: none;
+            display: flex;
+        }
+        .main-nav ul li {
+            margin-left: 20px;
+        }
+
+        /* বাটন স্টাইল */
+        .cta-button, .primary-button {
+            padding: 8px 15px;
+            border-radius: 5px;
+            font-weight: 600;
+            transition: background-color 0.3s;
+        }
+        .cta-button { /* হেডার বাটন */
+            background-color: var(--color-accent);
+            color: var(--color-heading);
+            border: none;
+        }
+        .primary-button { /* হিরো সেকশন বাটন */
+            background-color: var(--color-primary);
+            color: var(--color-background);
+            border: 2px solid var(--color-primary);
+            font-size: 1.1rem;
+            padding: 12px 25px;
+            margin-top: 15px;
+            display: inline-block;
+        }
+        .primary-button:hover {
+            background-color: #0066d9; /* slightly darker blue */
+            color: var(--color-background);
+        }
+
+        /* হিরো সেকশন */
+        .hero-section {
+            background-color: var(--color-light-bg);
+            padding: 80px 5%;
+            text-align: center;
+        }
+        .hero-section h1 {
+            font-size: 2.5rem;
+            color: var(--color-heading);
+            margin-bottom: 10px;
+        }
+        .accent-text {
+            color: var(--color-accent);
+        }
+        .hero-section p {
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto 20px;
+        }
+
+        /* কার্ড লেআউট */
+        .content-section {
+            padding: 50px 5%;
+        }
+        .section-title {
+            text-align: center;
+            font-size: 2rem;
+            color: var(--color-heading);
+            margin-bottom: 30px;
+        }
+        .post-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        .post-card {
+            background-color: var(--color-background);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s;
+        }
+        .post-card:hover {
+            transform: translateY(-5px);
+        }
+        .post-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+        .post-info {
+            padding: 15px;
+        }
+        .category-tag {
+            display: inline-block;
+            background-color: var(--color-primary);
+            color: var(--color-background);
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        .post-info h2 a {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--color-heading);
+        }
+        .meta {
+            font-size: 0.9rem;
+            color: #777;
+            margin-top: 10px;
+        }
+
+        /* ফুটার */
+        .main-footer {
+            background-color: var(--color-heading);
+            color: var(--color-light-bg);
+            padding: 40px 5%;
+            text-align: center;
+        }
+        .main-footer a {
+            color: var(--color-accent);
+            margin: 0 10px;
+        }
+
+        /* মোবাইল রেসপনসিভনেস */
+        @media (max-width: 768px) {
+            .main-header {
+                flex-direction: column;
+                padding: 15px 5%;
+            }
+            .main-nav ul {
+                padding: 10px 0;
+                justify-content: center;
+            }
+            .main-nav ul li {
+                margin: 0 10px;
+            }
+            .hero-section h1 {
+                font-size: 2rem;
+            }
+            .cta-button {
+                margin-top: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ১. হেডার (Fixed) -->
+    <header class="main-header">
+        <div class="logo">
+            <a href="/">Student Income Guide</a>
+        </div>
+        <nav class="main-nav">
+            <ul>
+                <li><a href="/freelancing/">ফ্রিল্যান্সিং</a></li>
+                <li><a href="/affiliate/">অ্যাফিলিয়েট মার্কেটিং</a></li>
+                <li><a href="/part-time/">পার্ট-টাইম জব</a></li>
+                <li><a href="/about/">আমাদের সম্পর্কে</a></li>
+            </ul>
+        </nav>
+        <a href="/subscribe/" class="cta-button">ফ্রি ই-বুক ডাউনলোড</a>
+    </header>
+
+    <!-- ২. হিরো সেকশন -->
+    <section class="hero-section">
+        <div class="hero-content">
+            <h1>আপনার ছাত্র জীবনকে <span class="accent-text">অর্থনৈতিকভাবে স্বাধীন</span> করুন।</h1>
+            <p>ঘরে বসে অনলাইন ইনকামের সকল সঠিক গাইডলাইন পান, সহজ এবং ধাপে ধাপে।</p>
+            <a href="#recent-posts" class="primary-button">আয়ের পথ শুরু করুন</a>
+        </div>
+    </section>
+
+    <!-- ৩. সাম্প্রতিক পোস্ট (হোমপেজ বডি) -->
+    <section id="recent-posts" class="content-section">
+        <h2 class="section-title">সাম্প্রতিক পোস্টসমূহ</h2>
+        <div class="post-grid">
+            
+            <!-- পোস্ট কার্ড ১ -->
+            <article class="post-card">
+                <img src="placeholder-image-1.jpg" alt="Post 1">
+                <div class="post-info">
+                    <span class="category-tag">ফ্রিল্যান্সিং</span>
+                    <h2><a href="#">ছাত্রদের জন্য ৫টি সেরা ফ্রিল্যান্সিং প্ল্যাটফর্ম</a></h2>
+                    <div class="meta">
+                        <span>লেখক: সি.আই. গাইড</span>
+                        <span>তারিখ: ২৭ অক্টোবর, ২০২৪</span>
+                    </div>
+                </div>
+            </article>
+
+            <!-- পোস্ট কার্ড ২ -->
+            <article class="post-card">
+                <img src="placeholder-image-2.jpg" alt="Post 2">
+                <div class="post-info">
+                    <span class="category-tag" style="background-color: #38c172;">অ্যাফিলিয়েট</span>
+                    <h2><a href="#">অ্যাফিলিয়েট মার্কেটিং: শুরু থেকে আয় পর্যন্ত গাইড</a></h2>
+                    <div class="meta">
+                        <span>লেখক: সি.আই. গাইড</span>
+                        <span>তারিখ: ২৫ অক্টোবর, ২০২৪</span>
+                    </div>
+                </div>
+            </article>
+
+            <!-- পোস্ট কার্ড ৩ -->
+            <article class="post-card">
+                <img src="placeholder-image-3.jpg" alt="Post 3">
+                <div class="post-info">
+                    <span class="category-tag">পার্ট-টাইম জব</span>
+                    <h2><a href="#">পড়ালেখার ক্ষতি না করে পার্ট-টাইম আয়ের সহজ উপায়</a></h2>
+                    <div class="meta">
+                        <span>লেখক: সি.আই. গাইড</span>
+                        <span>তারিখ: ২৩ অক্টোবর, ২০২৪</span>
+                    </div>
+                </div>
+            </article>
+
+            <!-- আপনি চাইলে এখানে আরো পোস্ট কার্ড যুক্ত করতে পারেন -->
+            
+        </div>
+    </section>
+
+    <!-- ৪. ফুটার -->
+    <footer class="main-footer">
+        <p>&copy; 2024 Student Income Guide. সর্বস্বত্ব সংরক্ষিত।</p>
+        <div>
+            <a href="/privacy/">গোপনীয়তা নীতি</a> |
+            <a href="/disclaimer/">অস্বীকৃতি</a>
+        </div>
+    </footer>
+
+</body>
+</html>
+```
