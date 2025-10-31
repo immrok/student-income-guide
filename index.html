@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aviator Prediction</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --primary-bg-start: #0f0c29; /* Darker blue-purple */
+            --primary-bg-end: #302b63;   /* Lighter blue-purple */
+            --secondary-bg-start: #23223f;
+            --secondary-bg-end: #4a4570;
+            --card-bg: rgba(255, 255, 255, 0.08);
+            --text-color: #f0f0f0;
+            --accent-color: #fdbb2d; /* Gold */
+            --button-color-start: #fdbb2d;
+            --button-color-end: #f16529; /* Orange */
+            --button-hover-color-start: #f16529;
+            --button-hover-color-end: #fdbb2d;
+            --input-bg: rgba(255, 255, 255, 0.15);
+            --border-color: rgba(255, 255, 255, 0.3);
+            --error-color: #e74c3c;
+
+            /* Social Media Colors */
+            --whatsapp-color: #25d366;
+            --telegram-color: #0088cc;
+            --email-color: #D44638;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, var(--primary-bg-start), var(--primary-bg-end));
+            color: var(--text-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden; /* Prevent scroll for body due to particles */
+            position: relative;
+        }
+
+        /* --- Particle Animation Background --- */
+        .particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: 0;
+        }
+
+        .particle {
+            position: absolute;
+            background-color: var(--accent-color);
+            border-radius: 50%;
+            opacity: 0;
+            animation: moveParticle linear infinite;
+        }
+
+        @keyframes moveParticle {
+            0% {
+                transform: translate(0, 0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.5;
+            }
+            90% {
+                opacity: 0.5;
+            }
+            100% {
+                transform: translate(var(--x-end), var(--y-end));
+                opacity: 0;
+            }
+        }
+
+        /* --- Main Container --- */
+        .container {
+            width: 100%;
+            max-width: 380px; /* Slightly smaller for better mobile fit */
+            margin: 15px; /* Reduced margin */
+            background: linear-gradient(135deg, var(--secondary-bg-start), var(--secondary-bg-end));
+            border-radius: 20px; /* Slightly smaller radius */
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6); /* Deeper shadow */
+            backdrop-filter: blur(8px); /* Slightly less blur */
+            -webkit-backdrop-filter: blur(8px);
+            padding: 25px 18px; /* Slightly less padding */
+            box-sizing: border-box;
+            position: relative;
+            z-index: 1;
+            border: 1px solid rgba(255, 255, 255, 0.1); /* Subtle border */
+        }
+
+        /* --- Header --- */
+        .header {
+            text-align: center;
+            margin-bottom: 25px; /* Reduced margin */
+        }
+
+        .logo {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.2em; /* Slightly smaller font */
+            color: var(--accent-color);
+            text-shadow: 0 0 12px var(--accent-color), 0 0 25px rgba(253, 187, 45, 0.5); /* Adjusted shadow */
+            letter-spacing: 1px; /* Reduced letter spacing */
+            margin-bottom: 8px; /* Reduced margin */
+        }
+
+        .tagline {
+            font-size: 0.8em; /* Smaller font */
+            color: rgba(255, 255, 255, 0.6); /* Softer color */
+            font-weight: 300;
+        }
+
+        /* --- Form Elements --- */
+        .form-group {
+            margin-bottom: 18px; /* Reduced margin */
+            position: relative;
+        }
+
+        .form-group i {
+            position: absolute;
+            left: 12px; /* Adjusted icon position */
+            top: 50%;
+            transform: translateY(-50%);
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 1em; /* Smaller icon */
+        }
+
+        input[type="text"],
+        input[type="password"] {
+            width: calc(100% - 35px); /* Adjusted width for icon */
+            padding: 12px 12px 12px 40px; /* Adjusted padding */
+            border: 1px solid var(--border-color);
+            border-radius: 8px; /* Smaller radius */
+            background: var(--input-bg);
+            color: var(--text-color);
+            font-size: 1em; /* Smaller font */
+            outline: none;
+            transition: all 0.2s ease;
+            box-sizing: border-box;
+        }
+
+        input[type="text"]:focus,
+        input[type="password"]:focus {
+            border-color: var(--accent-color);
+            box-shadow: 0 0 8px rgba(253, 187, 45, 0.4); /* Adjusted shadow */
+        }
+
+        button {
+            width: 100%;
+            padding: 13px; /* Reduced padding */
+            border: none;
+            border-radius: 8px; /* Smaller radius */
+            background: linear-gradient(45deg, var(--button-color-start), var(--button-color-end));
+            color: #fff;
+            font-size: 1.1em; /* Slightly smaller font */
+            font-weight: 600; /* Softer weight */
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4); /* Adjusted shadow */
+            margin-top: 8px; /* Reduced margin */
+        }
+
+        button:hover {
+            background: linear-gradient(45deg, var(--button-hover-color-start), var(--button-hover-color-end));
+            transform: translateY(-1px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.5);
+        }
+
+        .link-button {
+            background: none;
+            border: 1px solid rgba(255, 255, 255, 0.2); /* Softer border */
+            color: rgba(255, 255, 255, 0.7); /* Softer color */
+            font-size: 0.9em; /* Smaller font */
+            margin-top: 12px; /* Reduced margin */
+            box-shadow: none;
+            padding: 10px; /* Adjusted padding */
+        }
+
+        .link-button:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: none;
+            box-shadow: none;
+        }
+
+        .message {
+            text-align: center;
+            color: var(--error-color);
+            margin-top: 12px; /* Reduced margin */
+            font-size: 0.85em; /* Smaller font */
+            font-weight: 600;
+        }
+
+        /* --- Page Transitions (Optional, requires JS) --- */
+        .page {
+            display: none;
+            opacity: 0;
+            transition: opacity 0.4s ease-in-out;
+        }
+
+        .page.active {
+            display: block;
+            opacity: 1;
+        }
+
+        /* --- Navigation Bar --- */
+        .nav-bar {
+            display: flex;
+            justify-content: space-around;
+            background: rgba(0, 0, 0, 0.4);
+            border-top: 1px solid var(--border-color);
+            padding: 12px 0; /* Reduced padding */
+            border-radius: 0 0 20px 20px; /* Matches container radius */
+            margin: 15px -18px -25px; /* Adjusted negative margin for smaller container */
+            box-shadow: 0 -3px 15px rgba(0, 0, 0, 0.4);
+        }
+        .nav-bar button {
+            width: auto;
+            flex: 1;
+            margin: 0 3px; /* Reduced margin */
+            padding: 10px 0; /* Reduced padding */
+            font-size: 0.9em; /* Smaller font */
+            border-radius: 6px; /* Smaller radius */
+            background: rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.6); /* Softer color */
+            font-weight: 500; /* Softer weight */
+            box-shadow: none;
+        }
+        .nav-bar button:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-1px);
+        }
+        .nav-bar button.active {
+            background: var(--button-color-start); /* Use start color for active */
+            color: #fff;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        /* --- Section Titles --- */
+        .section-title {
+            font-size: 1.6em; /* Slightly smaller font */
+            font-family: 'Orbitron', sans-serif;
+            color: var(--accent-color);
+            text-align: center;
+            margin-bottom: 20px; /* Reduced margin */
+            text-shadow: 0 0 8px rgba(253, 187, 45, 0.3);
+        }
+
+        /* --- Package Grid --- */
+        .package-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px; /* Reduced gap */
+            margin-bottom: 25px; /* Reduced margin */
+        }
+
+        .package-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px; /* Smaller radius */
+            padding: 18px; /* Reduced padding */
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .package-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .package-days {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.6em; /* Slightly smaller */
+            color: var(--accent-color);
+            margin-bottom: 8px; /* Reduced margin */
+        }
+        .package-days span {
+            font-size: 0.55em; /* Smaller "দিন" text */
+            opacity: 0.7;
+        }
+
+        .package-price {
+            font-size: 1.2em; /* Smaller font */
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 12px; /* Reduced margin */
+        }
+
+        .package-card button {
+            width: auto;
+            padding: 8px 15px; /* Smaller button */
+            font-size: 0.85em; /* Smaller font */
+            margin-top: 0;
+        }
+
+        /* --- Contact Info --- */
+        .contact-info {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px; /* Smaller radius */
+            padding: 20px; /* Reduced padding */
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            margin-top: 20px; /* Reduced margin */
+        }
+
+        .contact-info .contact-methods {
+            display: flex;
+            flex-direction: column; /* Stack vertically on mobile */
+            gap: 12px; /* Gap between buttons */
+            margin-bottom: 15px;
+        }
+
+        .contact-info .contact-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 1em;
+            font-weight: 600;
+            text-decoration: none;
+            color: #fff;
+            transition: background-color 0.2s ease, transform 0.2s ease;
+        }
+
+        .contact-info .contact-btn i {
+            margin-right: 10px;
+            font-size: 1.2em;
+        }
+
+        .contact-info .whatsapp-btn { background-color: var(--whatsapp-color); }
+        .contact-info .whatsapp-btn:hover { background-color: #20b054; transform: translateY(-2px); }
+
+        .contact-info .telegram-btn { background-color: var(--telegram-color); }
+        .contact-info .telegram-btn:hover { background-color: #007bbd; transform: translateY(-2px); }
+
+        .contact-info .email-btn { 
+            background-color: var(--email-color); 
+            font-size: 0.9em; /* Smaller font for email to fit long addresses */
+            padding: 10px;
+        }
+        .contact-info .email-btn:hover { background-color: #c0392b; transform: translateY(-2px); }
+
+
+        .signal-note {
+            font-size: 0.8em; /* Smaller font */
+            color: rgba(255, 255, 255, 0.5); /* Softer color */
+            margin-top: 15px; /* Reduced margin */
+            line-height: 1.4;
+        }
+
+        /* --- Signal Display Page --- */
+        .signal-display {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 15px;
+            padding: 20px; /* Reduced padding */
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            margin-bottom: 18px; /* Reduced margin */
+        }
+
+        .signal-counter {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.4em; /* Smaller font */
+            color: var(--accent-color);
+            margin-bottom: 8px; /* Reduced margin */
+            text-shadow: 0 0 6px rgba(253, 187, 45, 0.3);
+        }
+
+        .current-signal-value {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.5em; /* Smaller font */
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 12px; /* Reduced margin */
+            text-shadow: 0 0 15px rgba(255, 255, 255, 0.6);
+        }
+
+        .signal-timer {
+            font-size: 1.1em; /* Slightly smaller font */
+            color: rgba(255, 255, 255, 0.6);
+            margin-bottom: 18px; /* Reduced margin */
+        }
+        .signal-timer span {
+            font-weight: 600;
+            color: var(--accent-color);
+        }
+    </style>
+</head>
+<body>
+    <!-- Particle Background -->
+    <div class="particles" id="particles-js"></div>
+
+    <div class="container">
+        <!-- Login Page -->
+        <div id="loginPage" class="page active">
+            <div class="header">
+                <div class="logo">AVIATOR PREDICTION</div>
+                <div class="tagline">আপনার বিশ্বস্ত সিগন্যাল সোর্স</div>
+            </div>
+            <form id="loginForm">
+                <div class="form-group">
+                    <i class="fas fa-user"></i>
+                    <input type="text" id="username" placeholder="ইউজারনেম" required>
+                </div>
+                <div class="form-group">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" id="password" placeholder="পাসওয়ার্ড" required>
+                </div>
+                <button type="submit">লগইন করুন</button>
+                <div id="loginMessage" class="message hidden"></div>
+                <button type="button" class="link-button" onclick="showCustomerSupportFromLogin()">
+                    <i class="fas fa-headset"></i> কাস্টমার সাপোর্ট
+                </button>
+            </form>
+        </div>
+
+        <!-- Home Page (Packages & Customer Support) -->
+        <div id="homePage" class="page">
+            <div class="header">
+                <div class="logo">AVIATOR PREDICTION</div>
+                <div class="tagline">আপনার সিগন্যালের জন্য</div>
+            </div>
+
+            <h2 class="section-title">প্যাকেজসমূহ</h2>
+            <div class="package-grid">
+                <!-- Package 1 -->
+                <div class="package-card">
+                    <div class="package-days">১<span>দিন</span></div>
+                    <div class="package-price">৳২৫০</div>
+                    <button onclick="contactCustomerSupport()">যোগাযোগ করুন</button>
+                </div>
+                <!-- Package 2 -->
+                <div class="package-card">
+                    <div class="package-days">২<span>দিন</span></div>
+                    <div class="package-price">৳৪৫০</div>
+                    <button onclick="contactCustomerSupport()">যোগাযোগ করুন</button>
+                </div>
+                <!-- Package 3 -->
+                <div class="package-card">
+                    <div class="package-days">৩<span>দিন</span></div>
+                    <div class="package-price">৳৬০০</div>
+                    <button onclick="contactCustomerSupport()">যোগাযোগ করুন</button>
+                </div>
+                <!-- Package 4 -->
+                <div class="package-card">
+                    <div class="package-days">৪<span>দিন</span></div>
+                    <div class="package-price">৳৭৫০</div>
+                    <button onclick="contactCustomerSupport()">যোগাযোগ করুন</button>
+                </div>
+                 <!-- Package 5 -->
+                 <div class="package-card">
+                    <div class="package-days">৫<span>দিন</span></div>
+                    <div class="package-price">৳৮৫০</div>
+                    <button onclick="contactCustomerSupport()">যোগাযোগ করুন</button>
+                </div>
+                 <!-- Package 6 -->
+                 <div class="package-card">
+                    <div class="package-days">৬<span>দিন</span></div>
+                    <div class="package-price">৳৯০০</div>
+                    <button onclick="contactCustomerSupport()">যোগাযোগ করুন</button>
+                </div>
+            </div>
+
+            <h2 class="section-title">কাস্টমার সেন্টার</h2>
+            <div class="contact-info">
+                <div class="contact-methods">
+                    <a href="https://wa.me/8801XXXXXXXXX" target="_blank" class="contact-btn whatsapp-btn">
+                        <i class="fab fa-whatsapp"></i> হোয়াটসঅ্যাপ
+                    </a>
+                    <a href="https://t.me/your_telegram_username" target="_blank" class="contact-btn telegram-btn">
+                        <i class="fab fa-telegram-plane"></i> টেলিগ্রাম
+                    </a>
+                    <a href="mailto:support@example.com" class="contact-btn email-btn">
+                        <i class="fas fa-envelope"></i> support@example.com
+                    </a>
+                </div>
+                <p class="signal-note">প্যাকেজ কিনতে বা যেকোনো সহায়তার জন্য উপরের মাধ্যমে যোগাযোগ করুন।</p>
+            </div>
+
+            <div class="nav-bar">
+                <button class="active" onclick="showPage('homePage', this)">
+                    <i class="fas fa-home"></i> হোম
+                </button>
+                <button onclick="showPage('signalAccessPage', this)">
+                    <i class="fas fa-chart-line"></i> সিগন্যাল
+                </button>
+            </div>
+        </div>
+
+        <!-- Signal Access Page -->
+        <div id="signalAccessPage" class="page">
+            <div class="header">
+                <div class="logo">সিগন্যাল</div>
+                <div class="tagline">প্রবেশের জন্য পাসওয়ার্ড দিন</div>
+            </div>
+            <form id="signalAccessForm">
+                <div class="form-group">
+                    <i class="fas fa-key"></i>
+                    <input type="password" id="signalPassword" placeholder="সিগন্যাল পাসওয়ার্ড" required>
+                </div>
+                <button type="submit">প্রবেশ করুন</button>
+                <div id="signalAccessMessage" class="message hidden"></div>
+                <button type="button" class="link-button" onclick="contactCustomerSupport()">
+                    <i class="fas fa-headset"></i> পাসওয়ার্ড পেতে যোগাযোগ করুন
+                </button>
+            </form>
+            <div class="nav-bar">
+                <button onclick="showPage('homePage', this)">
+                    <i class="fas fa-home"></i> হোম
+                </button>
+                <button class="active" onclick="showPage('signalAccessPage', this)">
+                    <i class="fas fa-chart-line"></i> সিগন্যাল
+                </button>
+            </div>
+        </div>
+
+        <!-- Signal Page -->
+        <div id="signalPage" class="page">
+            <div class="header">
+                <div class="logo">লাইভ সিগন্যাল</div>
+                <div class="tagline">পরবর্তী সিগন্যালের জন্য অপেক্ষা করুন</div>
+            </div>
+
+            <div class="signal-display">
+                <div class="signal-counter" id="signalCounter">বর্তমান সিগন্যাল: <span>০</span>/৫০</div>
+                <div class="current-signal-value" id="currentSignalValue">লোড হচ্ছে...</div>
+                <div class="signal-timer" id="signalTimer">পরবর্তী সিগন্যাল: <span>XX</span> সেকেন্ড</div>
+            </div>
+
+            <div class="signal-note">
+                গুরুত্বপূর্ণ: এগুলো আনুমানিক সিগন্যাল। খেলার সময় নিজের বিচক্ষণতা ব্যবহার করুন। 
+                অ্যাপের সিগন্যাল শুধুমাত্র তথ্যের জন্য, কোনো বিনিয়োগ পরামর্শ নয়।
+            </div>
+
+            <div class="nav-bar">
+                <button onclick="showPage('homePage', this)">
+                    <i class="fas fa-home"></i> হোম
+                </button>
+                <button class="active" onclick="showPage('signalPage', this)">
+                    <i class="fas fa-chart-line"></i> সিগন্যাল
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- Dummy credentials ---
+        const CORRECT_USERNAME = "user"; // ইউজারনেম যেকোনো কিছু হতে পারে
+        const CORRECT_PASSWORD = "82279211234";
+        const CORRECT_SIGNAL_PASSWORD = "8966411234";
+
+        let currentSignalIndex = 0;
+        const totalSignals = 50;
+        const signalDisplayDuration = 10; // seconds
+        let signalInterval; // Stores the interval for signals
+        let timerCountdownInterval; // Stores the interval for countdown
+
+        // Dummy signal values
+        const dummySignals = [
+            "2.50x", "1.80x", "3.20x", "1.50x", "4.10x", "2.10x", "1.90x", "3.80x", "1.60x", "2.90x",
+            "2.20x", "1.70x", "3.50x", "1.95x", "4.50x", "2.30x", "1.65x", "3.10x", "1.85x", "2.70x",
+            "2.60x", "1.75x", "3.30x", "1.55x", "4.20x", "2.00x", "1.98x", "3.90x", "1.68x", "2.80x",
+            "2.40x", "1.88x", "3.60x", "1.72x", "4.30x", "2.15x", "1.92x", "3.70x", "1.78x", "2.95x",
+            "2.65x", "1.82x", "3.40x", "1.62x", "4.00x", "2.25x", "1.96x", "3.00x", "1.77x", "2.85x"
+        ];
+
+        // --- Page Navigation Functions ---
+        function showPage(pageId, navButton = null) {
+            const pages = document.querySelectorAll('.page');
+            pages.forEach(page => page.classList.remove('active'));
+            document.getElementById(pageId).classList.add('active');
+
+            const navButtons = document.querySelectorAll('.nav-bar button');
+            navButtons.forEach(button => button.classList.remove('active'));
+            if (navButton) {
+                navButton.classList.add('active');
+            }
+            
+            // Stop signal interval if not on signal page
+            if (pageId !== 'signalPage') {
+                clearInterval(signalInterval);
+                clearInterval(timerCountdownInterval); // Clear countdown as well
+                currentSignalIndex = 0; // Reset signal counter
+            }
+        }
+
+        function showCustomerSupportFromLogin() {
+            showPage('homePage');
+            setTimeout(() => {
+                const customerSupportSection = document.querySelector('.contact-info');
+                if (customerSupportSection) {
+                    customerSupportSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            }, 100);
+        }
+
+        function contactCustomerSupport() {
+            alert("প্যাকেজ কিনতে বা পাসওয়ার্ড পেতে কাস্টমার সেন্টারে যোগাযোগ করুন। বিস্তারিত তথ্য নিচে দেওয়া আছে।");
+            showPage('homePage');
+            setTimeout(() => {
+                const customerSupportSection = document.querySelector('.contact-info');
+                if (customerSupportSection) {
+                    customerSupportSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            }, 100);
+        }
+
+        // --- Login Form Handler ---
+        document.getElementById('loginForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const loginMessage = document.getElementById('loginMessage');
+
+            // Username can be anything, only password is checked
+            if (password === CORRECT_PASSWORD) {
+                loginMessage.classList.add('hidden');
+                showPage('homePage');
+            } else {
+                loginMessage.textContent = "ভুল পাসওয়ার্ড। সহায়তার জন্য কাস্টমার সাপোর্টে যোগাযোগ করুন।";
+                loginMessage.classList.remove('hidden');
+            }
+        });
+
+        // --- Signal Access Form Handler ---
+        document.getElementById('signalAccessForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const signalPassword = document.getElementById('signalPassword').value;
+            const signalAccessMessage = document.getElementById('signalAccessMessage');
+
+            if (signalPassword === CORRECT_SIGNAL_PASSWORD) {
+                signalAccessMessage.classList.add('hidden');
+                showPage('signalPage');
+                startSignalDisplay();
+            } else {
+                signalAccessMessage.textContent = "ভুল পাসওয়ার্ড। সিগন্যাল পাসওয়ার্ড পেতে কাস্টমার সেন্টারে যোগাযোগ করুন।";
+                signalAccessMessage.classList.remove('hidden');
+            }
+        });
+
+        // --- Signal Display Logic ---
+        function startSignalDisplay() {
+            clearInterval(signalInterval);
+            clearInterval(timerCountdownInterval);
+
+            const signalCounterElem = document.getElementById('signalCounter').querySelector('span');
+            const currentSignalValueElem = document.getElementById('currentSignalValue');
+            const signalTimerElem = document.getElementById('signalTimer').querySelector('span');
+
+            function displayNextSignal() {
+                if (currentSignalIndex >= totalSignals) {
+                    currentSignalValueElem.textContent = "৫০টি সিগন্যাল শেষ। পরবর্তী আপডেটের জন্য অপেক্ষা করুন।";
+                    signalTimerElem.textContent = "০";
+                    clearInterval(signalInterval);
+                    clearInterval(timerCountdownInterval);
+                    return;
+                }
+
+                signalCounterElem.textContent = currentSignalIndex + 1;
+                currentSignalValueElem.textContent = dummySignals[currentSignalIndex] || "N/A";
+
+                let timeLeft = signalDisplayDuration;
+                signalTimerElem.textContent = timeLeft;
+
+                timerCountdownInterval = setInterval(() => {
+                    timeLeft--;
+                    signalTimerElem.textContent = timeLeft;
+                    if (timeLeft <= 0) {
+                        clearInterval(timerCountdownInterval);
+                        currentSignalIndex++;
+                        displayNextSignal(); // Move to next signal
+                    }
+                }, 1000);
+            }
+
+            // Start the first signal
+            currentSignalIndex = 0;
+            displayNextSignal();
+        }
+
+        // --- Particle Animation Logic ---
+        function createParticle() {
+            const particlesContainer = document.getElementById('particles-js');
+            const particle = document.createElement('div');
+            particle.classList.add('particle');
+            particlesContainer.appendChild(particle);
+
+            const size = Math.random() * 5 + 3; // 3 to 8px
+            particle.style.width = `${size}px`;
+            particle.style.height = `${size}px`;
+
+            const startX = Math.random() * window.innerWidth;
+            const startY = Math.random() * window.innerHeight;
+            particle.style.left = `${startX}px`;
+            particle.style.top = `${startY}px`;
+
+            const endX = Math.random() * window.innerWidth;
+            const endY = Math.random() * window.innerHeight;
+
+            particle.style.setProperty('--x-end', `${endX - startX}px`);
+            particle.style.setProperty('--y-end', `${endY - startY}px`);
+
+            const duration = Math.random() * 10 + 10; // 10 to 20 seconds
+            particle.style.animationDuration = `${duration}s`;
+            particle.style.animationDelay = `-${Math.random() * duration}s`; // Start at random points in animation
+
+            // Remove particle after animation ends to prevent accumulation
+            particle.addEventListener('animationend', () => {
+                particle.remove();
+            });
+        }
+
+        function generateParticles() {
+            for (let i = 0; i < 50; i++) { // Generate 50 particles initially
+                createParticle();
+            }
+            setInterval(() => { // Continuously add new particles
+                createParticle();
+            }, 500); // Add a new particle every 0.5 seconds
+        }
+
+        // --- Initial setup: Ensure login page is active on load and start particles ---
+        document.addEventListener('DOMContentLoaded', () => {
+            showPage('loginPage');
+            generateParticles();
+        });
+
+    </script>
+</body>
+</html>
